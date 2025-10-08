@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Configuração - Skynet</title>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body { 
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        color: #e4e4e4;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .setup-container {
+        max-width: 500px;
+        width: 100%;
+        background: #0f3460;
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        overflow: hidden;
+        animation: slideIn 0.5s ease;
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .header {
+        background: linear-gradient(135deg, #533483 0%, #7b2cbf 100%);
+        padding: 30px;
+        text-align: center;
+    }
+
+    .header h1 {
+        font-size: 28px;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    .header p {
+        opacity: 0.9;
+        font-size: 14px;
+    }
+
+    .content {
+        padding: 40px 30px;
+    }
+
+    .icon-container {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .icon-container .icon {
+        font-size: 64px;
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.1);
+        }
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: 500;
+        color: #9d4edd;
+    }
+
+    .input-wrapper {
+        position: relative;
+    }
+
+    .form-group input {
+        width: 100%;
+        background: #16213e;
+        border: 2px solid rgba(83, 52, 131, 0.3);
+        border-radius: 12px;
+        padding: 15px;
+        color: #e4e4e4;
+        font-size: 15px;
+        font-family: inherit;
+        transition: border-color 0.3s ease;
+    }
+
+    .form-group input:focus {
+        outline: none;
+        border-color: #7b2cbf;
+    }
+
+    .form-group input::placeholder {
+        color: #6c757d;
+    }
+
+    .toggle-visibility {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: #7b2cbf;
+        cursor: pointer;
+        font-size: 20px;
+        padding: 5px;
+        transition: opacity 0.3s ease;
+    }
+
+    .toggle-visibility:hover {
+        opacity: 0.7;
+    }
+
+    .help-text {
+        font-size: 13px;
+        color: #9ca3af;
+        margin-top: 8px;
+        line-height: 1.5;
+    }
+
+    .help-text a {
+        color: #7b2cbf;
+        text-decoration: none;
+    }
+
+    .help-text a:hover {
+        text-decoration: underline;
+    }
+
+    .submit-btn {
+        width: 100%;
+        background: linear-gradient(135deg, #533483 0%, #7b2cbf 100%);
+        border: none;
+        color: #fff;
+        padding: 16px;
+        border-radius: 12px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+    }
+
+    .submit-btn:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(123, 44, 191, 0.4);
+    }
+
+    .submit-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    .error-message {
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        color: #ef4444;
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        font-size: 14px;
+        display: none;
+    }
+
+    .success-message {
+        background: rgba(34, 197, 94, 0.1);
+        border: 1px solid rgba(34, 197, 94, 0.3);
+        color: #22c55e;
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        font-size: 14px;
+        display: none;
+    }
+
+    .loading-spinner {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: #fff;
+        animation: spin 0.8s linear infinite;
+        margin-right: 8px;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+</style>
+</head>
+<body>
+
+<div class="setup-container">
+    <div class="header">
+        <h1>🔐 Configuração Inicial</h1>
+        <p>Configure sua API Key para começar</p>
+    </div>
+
+    <div class="content">
+        <div class="icon-container">
+            <div class="icon">🤖</div>
+        </div>
+
+        <div id="error-message" class="error-message"></div>
+        <div id="success-message" class="success-message"></div>
+
+        <form id="setup-form" onsubmit="saveApiKey(event)">
+            <div class="form-group">
+                <label for="api_key">API Key da DeepSeek</label>
+                <div class="input-wrapper">
+                    <input 
+                        type="password" 
+                        id="api_key" 
+                        placeholder="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                        required
+                        minlength="20"
+                    >
+                    <button type="button" class="toggle-visibility" onclick="toggleVisibility()">
+                        <span id="eye-icon">👁️</span>
+                    </button>
+                </div>
+                <p class="help-text">
+                    Obtenha sua API Key em <a href="https://platform.deepseek.com" target="_blank">platform.deepseek.com</a>
+                </p>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submit-btn">
+                Salvar e Continuar
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+function toggleVisibility() {
+    const input = document.getElementById('api_key');
+    const icon = document.getElementById('eye-icon');
+    
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.textContent = '🙈';
+    } else {
+        input.type = 'password';
+        icon.textContent = '👁️';
+    }
+}
+
+function showError(message) {
+    const errorDiv = document.getElementById('error-message');
+    errorDiv.textContent = message;
+    errorDiv.style.display = 'block';
+    setTimeout(() => {
+        errorDiv.style.display = 'none';
+    }, 5000);
+}
+
+function showSuccess(message) {
+    const successDiv = document.getElementById('success-message');
+    successDiv.textContent = message;
+    successDiv.style.display = 'block';
+}
+
+async function saveApiKey(event) {
+    event.preventDefault();
+    
+    const apiKey = document.getElementById('api_key').value.trim();
+    const submitBtn = document.getElementById('submit-btn');
+    
+    if (!apiKey) {
+        showError('Por favor, insira uma API Key válida');
+        return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="loading-spinner"></span>Salvando...';
+
+    try {
+        const response = await fetch('http://127.0.0.1:5000/save_api_key', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ api_key: apiKey })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            showSuccess('✓ API Key salva com sucesso! Redirecionando...');
+            setTimeout(() => {
+                window.location.href = 'chat.html';
+            }, 1500);
+        } else {
+            showError(data.error || 'Erro ao salvar API Key');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = 'Salvar e Continuar';
+        }
+    } catch (error) {
+        showError('Erro ao conectar com o servidor: ' + error.message);
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Salvar e Continuar';
+    }
+}
+
+// Verifica se já existe uma API Key configurada ao carregar a página
+window.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const response = await fetch('http://127.0.0.1:5000/check_api_key');
+        const data = await response.json();
+        
+        if (data.configured) {
+            window.location.href = 'chat.html';
+        }
+    } catch (error) {
+        console.log('Servidor ainda não está rodando ou erro ao verificar API Key');
+    }
+});
+</script>
+
+</body>
+</html>
