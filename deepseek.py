@@ -9,7 +9,11 @@ CORS(app)
 
 # Caminho para o arquivo de configuração
 CONFIG_FILE = 'config.json'
-CONTEXTO_FILE = r"C:\Users\Emerson\Desktop\deepseek\contexto.txt"
+
+
+
+script_dir = os.path.dirname(os.path.abspath(__file__))
+CONTEXTO_FILE = os.path.join(script_dir, "contexto.txt")
 
 def carregar_api_key():
     """Carrega a API Key do arquivo de configuração"""
